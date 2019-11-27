@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>FluentMigrator.VStudio</id>
+    <version>0.0.1</version>
+    <authors>Volodymyr Liashenko</authors>
+    <projectUrl>https://github.com/crimcol/FluentMigrator.VStudio</projectUrl>
+    <license type="expression">MIT</license>
+    <releaseNotes></releaseNotes>
+    <description>Adds commands to use FluentMigrator in VisualStudio from package manager console.</description>
+    <copyright></copyright>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <developmentDependency>true</developmentDependency>
+    <language>en-US</language>
+    <tags>fluentmigrator migrations</tags>
+    <dependencies>
+      <dependency id="FluentMigrator" version="[1,4)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="FluentMigrator.VStudio.psm1" target="tools" />
+    <file src="FluentMigrator.VStudio.psd1" target="tools" />
+    <file src="init.ps1" target="tools" />
+  </files>
+</package>
