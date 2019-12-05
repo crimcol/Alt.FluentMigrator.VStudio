@@ -5,7 +5,7 @@ function GetMigrationSettings($projectName)
 {
 	$p = GetProjectProperties $projectName
 
-	$migrationSettingsFullPath = [IO.Path]::Combine($p.FullPath, 'migrationsetttings.json')
+	$migrationSettingsFullPath = [IO.Path]::Combine($p.FullPath, 'migrations.json')
 	$migrationSettings = Get-Content -Raw -Path $migrationSettingsFullPath | ConvertFrom-Json
 
 	$migrationSettings | Add-Member -MemberType NoteProperty -Name SettingsFullPath -Value $migrationSettingsFullPath
@@ -40,10 +40,10 @@ function GetProjectProperties($projectName)
 	return $o
 }
 
-function Fluent-UpdateDatabase($projectName)
+function FluentUpdateDatabase($projectName)
 {
 	$migrationProject = GetProjectProperties $projectName
-	Fluent-Build $($migrationProject.Project)
+	FluentBuild $($migrationProject.Project)
 
 	$migrationSettings = GetMigrationSettings $migrationProject.Name
 	$connectionProject = GetProjectProperties $migrationSettings.ConnectionProjectName
@@ -62,7 +62,7 @@ function Fluent-UpdateDatabase($projectName)
 	Invoke-Expression -Command $command
 }
 
-function Fluent-RollbackDatabase
+function FluentRollbackDatabase
 {
 	[CmdletBinding(DefaultParameterSetName = 'MigrationNumber')]
 		param (
@@ -72,7 +72,7 @@ function Fluent-RollbackDatabase
 			$projectName)
 
 	$migrationProject = GetProjectProperties $projectName
-	Fluent-Build $($migrationProject.Project)
+	FluentBuild $($migrationProject.Project)
 
 	$migrationSettings = GetMigrationSettings $migrationProject.Name
 	$connectionProject = GetProjectProperties $migrationSettings.ConnectionProjectName
@@ -92,7 +92,7 @@ function Fluent-RollbackDatabase
 	Invoke-Expression -Command $command
 }
 
-function Fluent-Build
+function FluentBuild
 {
 	[CmdletBinding(DefaultParameterSetName = '$project')]
 	param ([parameter(Position = 0, Mandatory = $true)] $project)
@@ -116,7 +116,5 @@ function GetConfigFilePath($projProps)
 	return $projProps.OutputFileFullPath + ".config"
 }
 
-Export-ModuleMember @('Fluent-UpdateDatabase')
-Export-ModuleMember @('Fluent-RollbackDatabase')
-#Export-ModuleMember @('GetMigrationSettings')
-#Export-ModuleMember @('GetProjectProperties')
+Export-ModuleMember @('FluentUpdateDatabase')
+Export-ModuleMember @('FluentRollbackDatabase')
