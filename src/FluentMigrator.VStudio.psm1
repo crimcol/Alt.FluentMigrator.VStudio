@@ -15,9 +15,9 @@ function GetMigrationSettings($projectName)
 
 function GetProjectProperties($projectName)
 {
-	$p = If (!$projectName) { Get-Project } Else { Get-Project $projectName }
+	$p = GetProject $projectName
 
-	$fullPath = $p.Properties.Item("FullPath").Value
+	$fullPath = Split-Path -Path $p.FullName
 	$outputPath = $p.ConfigurationManager.ActiveConfiguration.Properties.Item("OutputPath").Value
 	$outputFileName = $p.Properties.Item("OutputFileName").Value
 	$outputFullPath = [IO.Path]::Combine($fullPath, $outputPath)
@@ -65,9 +65,7 @@ function FluentUpdateDatabase($projectName)
 function FluentRollbackDatabase
 {
 	[CmdletBinding(DefaultParameterSetName = 'MigrationNumber')]
-		param (
-			[parameter(Position = 0,
-				Mandatory = $true)]
+		param ([parameter(Position = 0, Mandatory = $true)]
 			[string] $MigrationNumber,
 			$projectName)
 
@@ -111,10 +109,81 @@ function FluentBuild
 	Write-Output "'$($project.ProjectName)' project build success."
 }
 
+function FluentAddMigration
+{
+	[CmdletBinding(DefaultParameterSetName = 'MigrationName')]
+    param (
+		[parameter(Position = 0, Mandatory = $true, ParameterSetName='MigrationName')]
+		[string] $MigrationName,
+		[Parameter(Position = 1, Mandatory = $false, ParameterSetName='ProjectName')]
+		[string] $ProjectName)
+	
+	$projectSettings = GetProjectProperties $ProjectName
+	$p = $projectSettings.Project
+
+	$timestamp = Get-Date -Format yyyyMMddHHmmss
+	$migrationsFolderName = "Migrations";
+	$namespace = $p.Properties.Item("DefaultNamespace").Value.ToString() + ".$migrationsFolderName"
+	$migrationsPath = Join-Path $projectSettings.FullPath $migrationsFolderName
+	$className = $migrationName -replace "([\s-])", "_"
+	$fileName = $timestamp + "_$migrationName.cs"
+	$filePath = Join-Path $migrationsPath $fileName
+	$fileContent = GetMigrationContent $namespace $timestamp $className
+
+	CreateFolderIfNotExist $migrationsPath
+	New-Item -Path $migrationsPath -Name $fileName -ItemType "file" -Value $fileContent
+	$p.ProjectItems.AddFromFile($filePath)
+}
+
 function GetConfigFilePath($projProps)
 {
 	return $projProps.OutputFileFullPath + ".config"
 }
 
+function GetProject($projectName)
+{
+	$p = If (!$projectName) { Get-Project } Else { Get-Project $projectName }
+	return $p
+}
+
+function CreateFolderIfNotExist($path)
+{
+	if (-not (Test-Path $path))
+	{
+		return [System.IO.Directory]::CreateDirectory($migrationsPath)
+	}
+}
+
+function GetMigrationContent($namespace, $timestamp, $className)
+{
+	$fileContent = @"
+using FluentMigrator;
+
+namespace $namespace
+{
+	[Migration($timestamp)]
+	public class $className : Migration
+	{
+		public override void Up()
+		{
+		}
+
+		public override void Down()
+		{
+		}
+	}
+}  
+"@
+	return $fileContent
+}
+
+
 Export-ModuleMember @('FluentUpdateDatabase')
 Export-ModuleMember @('FluentRollbackDatabase')
+Export-ModuleMember @('FluentAddMigration')
+
+# TODO
+# - Build project before adding migration
+# - Check if new migration already exists
+# - Add Migration folder to config
+# - Add Time format to config
