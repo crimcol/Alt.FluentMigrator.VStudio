@@ -43,7 +43,7 @@ function GetProjectProperties($projectName)
 function FluentUpdateDatabase($projectName)
 {
 	$migrationProject = GetProjectProperties $projectName
-	FluentBuild $($migrationProject.Project)
+	FluentBuild $migrationProject.Project
 
 	$migrationSettings = GetMigrationSettings $migrationProject.Name
 	$connectionProject = GetProjectProperties $migrationSettings.ConnectionProjectName
@@ -70,7 +70,7 @@ function FluentRollbackDatabase
 			$projectName)
 
 	$migrationProject = GetProjectProperties $projectName
-	FluentBuild $($migrationProject.Project)
+	FluentBuild $migrationProject.Project
 
 	$migrationSettings = GetMigrationSettings $migrationProject.Name
 	$connectionProject = GetProjectProperties $migrationSettings.ConnectionProjectName
@@ -121,6 +121,8 @@ function FluentAddMigration
 	$projectSettings = GetProjectProperties $ProjectName
 	$p = $projectSettings.Project
 
+	FluentBuild $p
+
 	$timestamp = Get-Date -Format yyyyMMddHHmmss
 	$migrationsFolderName = "Migrations";
 	$namespace = $p.Properties.Item("DefaultNamespace").Value.ToString() + ".$migrationsFolderName"
@@ -133,7 +135,7 @@ function FluentAddMigration
 	CreateFolderIfNotExist $migrationsPath
 	New-Item -Path $migrationsPath -Name $fileName -ItemType "file" -Value $fileContent > $null
 	$p.ProjectItems.AddFromFile($filePath) > $null
-	Write-Output "Created new migration in file: $fileName"
+	Write-Output "New migration in file: $fileName"
 }
 
 function GetConfigFilePath($projProps)
@@ -184,7 +186,6 @@ Export-ModuleMember @('FluentRollbackDatabase')
 Export-ModuleMember @('FluentAddMigration')
 
 # TODO
-# - Build project before adding migration
 # - Check if new migration already exists
 # - Add Migration folder to config
 # - Add Time format to config
