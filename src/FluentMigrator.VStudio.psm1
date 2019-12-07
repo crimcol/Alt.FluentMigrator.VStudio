@@ -189,5 +189,3 @@ Export-ModuleMember @('FluentAddMigration')
 
 # TODO
 # - Check if new migration already exists
-# - Add Migration folder to config
-# - Add Time format to config
