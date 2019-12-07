@@ -16,8 +16,10 @@ $configContent = @"
     "ConnectionName": "TestDb",
     "FluentMigrationToolPath": ".\\packages\\FluentMigrator.Console.3.2.1\\net461\\x86\\Migrate.exe",
     "DbProvider": "SqlServer",
-    "DbProviderHelpUrl": "https://fluentmigrator.github.io/articles/runners/runner-console.html#--provider---dbtype---dbvalue-required"
-}  
+    "DbProviderHelpUrl": "https://fluentmigrator.github.io/articles/runners/runner-console.html#--provider---dbtype---dbvalue-required",
+    "MigrationFolder": "Migrations",
+    "TimeFormat": "yyyyMMddHHmmss"
+}
 "@
 
 New-Item -Path $fullPath -Name $fileName -ItemType "file" -Value $configContent

@@ -113,19 +113,21 @@ function FluentAddMigration
 {
 	[CmdletBinding(DefaultParameterSetName = 'MigrationName')]
     param (
-		[parameter(Position = 0, Mandatory = $true, ParameterSetName='MigrationName')]
-		[string] $MigrationName,
-		[Parameter(Position = 1, Mandatory = $false, ParameterSetName='ProjectName')]
-		[string] $ProjectName)
+	[parameter(Position = 0, Mandatory = $true, ParameterSetName='MigrationName')]
+	[string] $MigrationName,
+	[Parameter(Position = 1, Mandatory = $false, ParameterSetName='ProjectName')]
+	[string] $ProjectName)
 	
+	$migrationSettings = GetMigrationSettings $ProjectName
 	$projectSettings = GetProjectProperties $ProjectName
 	$p = $projectSettings.Project
 
 	FluentBuild $p
 
-	$timestamp = Get-Date -Format yyyyMMddHHmmss
-	$migrationsFolderName = "Migrations";
-	$namespace = $p.Properties.Item("DefaultNamespace").Value.ToString() + ".$migrationsFolderName"
+	$timestamp = Get-Date -Format $migrationSettings.TimeFormat
+	$migrationsFolderName = $migrationSettings.MigrationFolder;
+	$namespacePart = $migrationsFolderName -replace "(\\)", "."
+	$namespace = $p.Properties.Item("DefaultNamespace").Value.ToString() + ".$namespacePart"
 	$migrationsPath = Join-Path $projectSettings.FullPath $migrationsFolderName
 	$className = $migrationName -replace "([\s-])", "_"
 	$fileName = $timestamp + "_$migrationName.cs"
