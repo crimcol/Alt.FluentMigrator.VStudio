@@ -131,8 +131,9 @@ function FluentAddMigration
 	$fileContent = GetMigrationContent $namespace $timestamp $className
 
 	CreateFolderIfNotExist $migrationsPath
-	New-Item -Path $migrationsPath -Name $fileName -ItemType "file" -Value $fileContent
-	$p.ProjectItems.AddFromFile($filePath)
+	New-Item -Path $migrationsPath -Name $fileName -ItemType "file" -Value $fileContent > $null
+	$p.ProjectItems.AddFromFile($filePath) > $null
+	Write-Output "Created new migration in file: $fileName"
 }
 
 function GetConfigFilePath($projProps)
@@ -150,7 +151,7 @@ function CreateFolderIfNotExist($path)
 {
 	if (-not (Test-Path $path))
 	{
-		return [System.IO.Directory]::CreateDirectory($migrationsPath)
+		[System.IO.Directory]::CreateDirectory($migrationsPath) > $null
 	}
 }
 
