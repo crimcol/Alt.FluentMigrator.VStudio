@@ -13,7 +13,7 @@
     <language>en-US</language>
     <tags>fluentmigrator migrations</tags>
     <dependencies>
-      <dependency id="FluentMigrator" version="[1,4)" />
+      <dependency id="FluentMigrator" version="3.0.0" />
     </dependencies>
   </metadata>
   <files>
