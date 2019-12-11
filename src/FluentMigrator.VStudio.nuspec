@@ -1,7 +1,7 @@
 <package>
   <metadata>
     <id>FluentMigrator.VStudio</id>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
     <authors>Volodymyr Liashenko</authors>
     <projectUrl>https://github.com/crimcol/FluentMigrator.VStudio</projectUrl>
     <license type="expression">MIT</license>
@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <developmentDependency>true</developmentDependency>
     <language>en-US</language>
-    <tags>fluentmigrator migrations</tags>
+    <tags>fluentmigrator migrations visualstudio</tags>
     <dependencies>
       <dependency id="FluentMigrator" version="3.0.0" />
     </dependencies>
