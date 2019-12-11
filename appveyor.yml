@@ -9,13 +9,3 @@ test: off
 artifacts:
 - path: ./artifacts/*.nupkg
   name: Nuget
-deploy:
-- provider: NuGet
-  api_key:
-    secure: i+cpRE3vxVRolff5MbS+jXja8fq0IKVr5yhZbFC/Z5J7KzKMhq8qrh9sLwfoU1FP
-  username:
-    secure: 6zlS6CtplOOdZDwODO9awA==
-  skip_symbols: false
-  artifact: 'path: .\artifacts\**\*.nupkg'
-  on:
-    branch: master
