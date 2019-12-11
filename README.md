@@ -49,9 +49,9 @@ Example:
 
 
 ### FluentAddMigration
-This command generates a new empty migration with migration number based on curent time and specified time format in **migrations.json**.
+This command generates a new empty migration with a number based on current time with specified time format in **migrations.json**.
 
-It will create migration folder if it does not exist.
+It creates migration folder if it does not exist.
 
 ```console
 PM > FluentAddMigration InitialMigration
