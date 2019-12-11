@@ -6,11 +6,10 @@ cache:
 
 build_script:
 - ps: ./build.ps1
-
 test: off
-
 artifacts:
 - path: ./artifacts/*.nupkg
+  name: Nuget
 build:
   verbosity: minimal
 deploy:
