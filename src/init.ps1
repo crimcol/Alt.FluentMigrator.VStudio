@@ -18,5 +18,5 @@ if ($importedModule)
 
 if ($import)
 {
-    Import-Module $moduleToImport
+    Import-Module $moduleToImport -DisableNameChecking
 }
