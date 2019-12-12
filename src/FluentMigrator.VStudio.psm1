@@ -40,7 +40,7 @@ function GetProjectProperties($projectName)
 	return $o
 }
 
-function FluentUpdateDatabase($projectName)
+function Update-FluentDatabase($projectName)
 {
 	$migrationProject = GetProjectProperties $projectName
 	FluentBuild $migrationProject.Project
@@ -62,7 +62,7 @@ function FluentUpdateDatabase($projectName)
 	Invoke-Expression -Command $command
 }
 
-function FluentRollbackDatabase
+function Rollback-FluentDatabase
 {
 	[CmdletBinding(DefaultParameterSetName = 'MigrationNumber')]
 		param ([parameter(Position = 0, Mandatory = $true)]
@@ -109,7 +109,7 @@ function FluentBuild
 	Write-Output "'$($project.ProjectName)' project build success."
 }
 
-function FluentAddMigration
+function Add-FluentMigration
 {
 	[CmdletBinding(DefaultParameterSetName = 'MigrationName')]
     param (
@@ -183,9 +183,6 @@ namespace $namespace
 }
 
 
-Export-ModuleMember @('FluentUpdateDatabase')
-Export-ModuleMember @('FluentRollbackDatabase')
-Export-ModuleMember @('FluentAddMigration')
-
-# TODO
-# - Check if new migration already exists
+Export-ModuleMember @('Update-FluentDatabase')
+Export-ModuleMember @('Rollback-FluentDatabase')
+Export-ModuleMember @('Add-FluentMigration')
