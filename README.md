@@ -10,9 +10,9 @@ It contains settings file:
 
 and following commands:
 
-* FluentAddMigration
-* FluentUpdateDatabase
-* FluentRollbackDatabase
+* Add-FluentMigration
+* Update-FluentDatabase
+* Rollback-FluentDatabase
 
 ### How to install?
 Please install [FluentMigrator](https://github.com/schambers/fluentmigrator) first.
@@ -48,13 +48,13 @@ Example:
 * **TimeFormat** - time format is a number which will be used for migration number and part of the file name. Time format *"yyMMddHHmm"* also applicable but contains less characters.
 
 
-### FluentAddMigration
+### Add-FluentMigration
 This command generates a new empty migration with a number based on current time with specified time format in **migrations.json**.
 
 It creates migration folder if it does not exist.
 
 ```console
-PM > FluentAddMigration InitialMigration
+PM > Add-FluentMigration InitialMigration
 ```
 
 The migration file will look like this:
@@ -78,18 +78,18 @@ namespace DbMigrations.Migrations
 }  
 ```
 
-### FluentUpdateDatabase
+### Update-FluentDatabase
 
 This command will apply all recently created migrations.
 
 ```console
-PM > FluentUpdateDatabase
+PM > Update-FluentDatabase
 ```
 
-### FluentRollbackDatabase
+### Rollback-FluentDatabase
 
 This command will revert all migrations to specified version (migration number).
 
 ```console
-PM > FluentRollbackDatabase 20191207220215
+PM > Rollback-FluentDatabase 20191207220215
 ```
