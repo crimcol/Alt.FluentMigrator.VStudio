@@ -1,6 +1,6 @@
 <package>
   <metadata>
-    <id>FluentMigrator.VStudio</id>
+    <id>Alt.FluentMigrator.VStudio</id>
     <version>1.0.0</version>
     <authors>Volodymyr Liashenko</authors>
     <projectUrl>https://github.com/crimcol/FluentMigrator.VStudio</projectUrl>

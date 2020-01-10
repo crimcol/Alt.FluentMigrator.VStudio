@@ -1,14 +1,14 @@
 param($installPath, $toolsPath, $package, $project)
 
-$importedModule = Get-Module 'FluentMigrator.VStudio'
-$moduleToImport = Test-ModuleManifest (Join-Path $PSScriptRoot 'FluentMigrator.VStudio.psd1')
+$importedModule = Get-Module 'Alt.FluentMigrator.VStudio'
+$moduleToImport = Test-ModuleManifest (Join-Path $PSScriptRoot 'Alt.FluentMigrator.VStudio.psd1')
 $import = $true
 
 if ($importedModule)
 {
     if ($importedModule.Version -le $moduleToImport.Version)
     {
-        Remove-Module 'FluentMigrator.VStudio'
+        Remove-Module 'Alt.FluentMigrator.VStudio'
     }
     else
     {
