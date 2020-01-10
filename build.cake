@@ -12,7 +12,7 @@ Task("Package")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    NuGetPack("./src/FluentMigrator.VStudio.nuspec", new NuGetPackSettings
+    NuGetPack("./src/Alt.FluentMigrator.VStudio.nuspec", new NuGetPackSettings
     {
         OutputDirectory = artifactsDir,
     });
