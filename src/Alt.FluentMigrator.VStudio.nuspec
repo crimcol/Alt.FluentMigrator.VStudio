@@ -17,8 +17,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="FluentMigrator.VStudio.psm1" target="tools" />
-    <file src="FluentMigrator.VStudio.psd1" target="tools" />
+    <file src="Alt.FluentMigrator.VStudio.psm1" target="tools" />
+    <file src="Alt.FluentMigrator.VStudio.psd1" target="tools" />
     <file src="init.ps1" target="tools" />
     <file src="install.ps1" target="tools" />
   </files>
