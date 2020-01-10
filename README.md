@@ -1,3 +1,4 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/n76p0y2j17esa415/branch/master?svg=true)](https://ci.appveyor.com/project/crimcol/alt-fluentmigrator-vstudio/branch/master)
 # Alt.FluentMigrator.VStudio
 [FluentMigrator](https://github.com/schambers/fluentmigrator) is a SQL migration framework designed to help version an application's database. This package allows a developer to create a new migration, update or rollback database within Visual Studio's Package Manager console.
 
