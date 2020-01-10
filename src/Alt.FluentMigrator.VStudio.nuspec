@@ -3,7 +3,7 @@
     <id>Alt.FluentMigrator.VStudio</id>
     <version>1.0.0</version>
     <authors>Volodymyr Liashenko</authors>
-    <projectUrl>https://github.com/crimcol/FluentMigrator.VStudio</projectUrl>
+    <projectUrl>https://github.com/crimcol/Alt.FluentMigrator.VStudio</projectUrl>
     <license type="expression">MIT</license>
     <releaseNotes></releaseNotes>
     <description>Adds commands to use FluentMigrator in VisualStudio from package manager console.</description>
