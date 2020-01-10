@@ -1,8 +1,8 @@
-# FluentMigrator.VStudio
+# Alt.FluentMigrator.VStudio
 [FluentMigrator](https://github.com/schambers/fluentmigrator) is a SQL migration framework designed to help version an application's database. This package allows a developer to create a new migration, update or rollback database within Visual Studio's Package Manager console.
 
-### What is FluentMigrator.VStudio?
-[FluentMigrator.VStudio](https://github.com/crimcol/FluentMigrator.VStudio) is a set of commands for Package Manager console which makes much easier and faster work with Fluent migrations.
+### What is Alt.FluentMigrator.VStudio?
+[Alt.FluentMigrator.VStudio](https://github.com/crimcol/Alt.FluentMigrator.VStudio) is a set of commands for Package Manager console which makes much easier and faster work with Fluent migrations.
 
 It contains settings file:
 
@@ -17,10 +17,10 @@ and following commands:
 ### How to install?
 Please install [FluentMigrator](https://github.com/schambers/fluentmigrator) first.
 
-Select Default project in Package Manager console and then install [FluentMigrator.VStudio](https://github.com/crimcol/FluentMigrator.VStudio) by command:
+Select Default project in Package Manager console and then install [Alt.FluentMigrator.VStudio](https://github.com/crimcol/Alt.FluentMigrator.VStudio) by command:
 
 ```console
-PM > Install-Package FluentMigrator.VStudio
+PM > Install-Package Alt.FluentMigrator.VStudio
 ```
 It will create **migrations.json** file which contains settings. Please update it.
 
