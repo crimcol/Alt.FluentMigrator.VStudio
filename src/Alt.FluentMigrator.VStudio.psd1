@@ -3,7 +3,7 @@
     RootModule = 'Alt.FluentMigrator.VStudio.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.0.0.0'
+    ModuleVersion = '1.1.0.0'
 
     # ID used to uniquely identify this module
     GUID = '93DE7F00-BB79-422C-9FC8-9EB37E4B7033'
