@@ -18,7 +18,7 @@ and following commands:
 ### How to install?
 Please install [FluentMigrator](https://github.com/schambers/fluentmigrator) first.
 
-Select Default project in Package Manager console and then install [Alt.FluentMigrator.VStudio](https://github.com/crimcol/Alt.FluentMigrator.VStudio) by command:
+Select Default project in Package Manager console and then install [Alt.FluentMigrator.VStudio](https://www.nuget.org/packages/Alt.FluentMigrator.VStudio/) by command:
 
 ```console
 PM > Install-Package Alt.FluentMigrator.VStudio
@@ -31,13 +31,14 @@ Example:
 
 ```json
 {
-  "ConnectionProjectName": "ConsoleApp",
-  "ConnectionName": "TestDb",
-  "FluentMigrationToolPath": ".\\packages\\FluentMigrator.Console.3.2.1\\net461\\x86\\Migrate.exe",
-  "DbProvider": "SqlServer",
-  "DbProviderHelpUrl": "https://fluentmigrator.github.io/articles/runners/runner-console.html#--provider---dbtype---dbvalue-required",
-  "MigrationFolder": "Migrations",
-  "TimeFormat": "yyyyMMddHHmmss"
+  "ConnectionProjectName" : "ConsoleApp",
+  "ConnectionName" : "TestDb",
+  "FluentMigrationToolPath" : ".\\packages\\FluentMigrator.Console.3.2.1\\net461\\x86\\Migrate.exe",
+  "DbProvider" : "SqlServer",
+  "DbProviderHelpUrl" : "https://fluentmigrator.github.io/articles/runners/runner-console.html#--provider---dbtype---dbvalue-required",
+  "MigrationFolder" : "Migrations",
+  "ScriptsFolder" :  "Scripts",
+  "TimeFormat" : "yyyyMMddHHmmss"
 }
 ```
 * **ConnectionProjectName** - name of the project in your solution which contains Web.config or App.config file with connection string.
@@ -46,18 +47,28 @@ Example:
 * **DbProvider** - database provider. It is a parameter for FluentMigrator: [--provider, --dbtype, --db=VALUE](https://fluentmigrator.github.io/articles/runners/runner-console.html#--provider---dbtype---dbvalue-required)
 * **DbProviderHelpUrl** - url on documentation.
 * **MigrationFolder** - folder name in your project where all migrations will be created. it also supports subfolders. 'Migrations' by default.
+* **ScriptsFolder** - folder name for sql scripts.
 * **TimeFormat** - time format is a number which will be used for migration number and part of the file name. Time format *"yyMMddHHmm"* also applicable but contains less characters.
 
 
 ### Add-FluentMigration
 This command generates a new empty migration with a number based on current time with specified time format in **migrations.json**.
 
-It creates migration folder if it does not exist.
-
 ```console
-PM > Add-FluentMigration InitialMigration
+Add-FluentMigration [-MigrationName] <string> [[-AddScript]] [[-ProjectName] <string>]
 ```
 
+#### Parameters
+* **-MigrationName <string>** -  required. Specifies migration name.
+* **-AddScript <SwitchParameter>** - optional. Specifies where sql file will be created in script folder.
+* **-ProjectName <string>** - optional. Specifies the project where migrations and scripts will be created. If omitted, the default project selected in package manager console is used.
+
+#### Example
+
+```console
+PM > Add-FluentMigration InitialMigration -AddScript
+```
+It creates a migration folder if it does not exist. And it creates a script folder because of **-AddScript** parameter.
 The migration file will look like this:
 
 ```csharp
