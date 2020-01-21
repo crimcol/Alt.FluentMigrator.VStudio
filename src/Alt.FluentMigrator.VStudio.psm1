@@ -111,11 +111,13 @@ function FluentBuild
 
 function Add-FluentMigration
 {
-	[CmdletBinding(DefaultParameterSetName = 'MigrationName')]
+	[CmdletBinding(PositionalBinding = $false, DefaultParameterSetName = 'MigrationName')]
     param (
 	[parameter(Position = 0, Mandatory = $true, ParameterSetName='MigrationName')]
 	[string] $MigrationName,
-	[Parameter(Position = 1, Mandatory = $false, ParameterSetName='ProjectName')]
+	[Parameter(Position = 1, Mandatory = $false)]
+    [Switch]$AddScript = $false,
+	[Parameter(Position = 2, Mandatory = $false)]
 	[string] $ProjectName)
 	
 	$migrationSettings = GetMigrationSettings $ProjectName
@@ -138,6 +140,25 @@ function Add-FluentMigration
 	New-Item -Path $migrationsPath -Name $fileName -ItemType "file" -Value $fileContent > $null
 	$p.ProjectItems.AddFromFile($filePath) > $null
 	Write-Output "New migration in file: $fileName"
+
+	if ($AddScript) {
+		$scriptsFolderName = $migrationSettings.ScriptsFolder;
+		$scriptsFolderPath = Join-Path $projectSettings.FullPath $scriptsFolderName
+		$scriptFileName = $timestamp + "_$migrationName.sql"
+		$scriptFilePath = Join-Path $scriptsFolderPath $scriptFileName
+		$scriptDownFileName = $timestamp + "_$($migrationName)_Down.sql"
+		$scriptDownFilePath = Join-Path $scriptsFolderPath $scriptDownFileName
+
+		CreateFolderIfNotExist $scriptsFolderPath
+		
+		New-Item -Path $scriptsFolderPath -Name $scriptFileName -ItemType "file" -Value "--SQL script here." > $null
+		$scriptItem = $p.ProjectItems.AddFromFile($scriptFilePath)
+		$scriptItem.Properties.Item("CopyToOutputDirectory").Value = 2;		#Copy if newer
+
+		New-Item -Path $scriptsFolderPath -Name $scriptDownFileName -ItemType "file" -Value "--SQL script here." > $null
+		$scriptItem = $p.ProjectItems.AddFromFile($scriptDownFilePath)
+		$scriptItem.Properties.Item("CopyToOutputDirectory").Value = 2;		#Copy if newer
+	}
 }
 
 function GetConfigFilePath($projProps)
@@ -155,7 +176,7 @@ function CreateFolderIfNotExist($path)
 {
 	if (-not (Test-Path $path))
 	{
-		[System.IO.Directory]::CreateDirectory($migrationsPath) > $null
+		[System.IO.Directory]::CreateDirectory($path) > $null
 	}
 }
 
@@ -186,3 +207,5 @@ namespace $namespace
 Export-ModuleMember @('Update-FluentDatabase')
 Export-ModuleMember @('Rollback-FluentDatabase')
 Export-ModuleMember @('Add-FluentMigration')
+
+# TODO commands alias

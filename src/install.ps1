@@ -12,13 +12,14 @@ if ($project.ProjectItems | Where-Object { $_.Name -eq $fileName })
 
 $configContent = @"
 {
-    "ConnectionProjectName": "MigrationTest",
-    "ConnectionName": "TestDb",
-    "FluentMigrationToolPath": ".\\packages\\FluentMigrator.Console.3.2.1\\net461\\x86\\Migrate.exe",
-    "DbProvider": "SqlServer",
-    "DbProviderHelpUrl": "https://fluentmigrator.github.io/articles/runners/runner-console.html#--provider---dbtype---dbvalue-required",
-    "MigrationFolder": "Migrations",
-    "TimeFormat": "yyyyMMddHHmmss"
+  "ConnectionProjectName" : "ConsoleApp",
+  "ConnectionName" : "TestDb",
+  "FluentMigrationToolPath" : ".\\packages\\FluentMigrator.Console.3.2.1\\net461\\x86\\Migrate.exe",
+  "DbProvider" : "SqlServer",
+  "DbProviderHelpUrl" : "https://fluentmigrator.github.io/articles/runners/runner-console.html#--provider---dbtype---dbvalue-required",
+  "MigrationFolder" : "Migrations",
+  "ScriptsFolder" :  "Scripts",
+  "TimeFormat" : "yyyyMMddHHmmss"
 }
 "@
 
