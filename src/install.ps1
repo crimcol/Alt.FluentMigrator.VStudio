@@ -1,11 +1,11 @@
 param($installPath, $toolsPath, $package, $project)
 
-$p = Get-Project
+$p = $project
 $fullPath = Split-Path -Path $p.FullName
 $fileName = "migrations.json"
 $configPath = "$fullPath\$fileName"
 
-if ($project.ProjectItems | Where-Object { $_.Name -eq $fileName })
+if ($p.ProjectItems | Where-Object { $_.Name -eq $fileName })
 {
     return
 }
