@@ -128,8 +128,7 @@ function Add-FluentMigration
 
 	$timestamp = Get-Date -Format $migrationSettings.TimeFormat
 	$migrationsFolderName = $migrationSettings.MigrationFolder;
-	$namespacePart = $migrationsFolderName -replace "(\\)", "."
-	$namespace = $p.Properties.Item("DefaultNamespace").Value.ToString() + ".$namespacePart"
+	$namespace = $p.Properties.Item("DefaultNamespace").Value.ToString()
 	$migrationsPath = Join-Path $projectSettings.FullPath $migrationsFolderName
 	$className = $migrationName -replace "([\s-])", "_"
 	$fileName = $timestamp + "_$migrationName.cs"
