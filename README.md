@@ -81,10 +81,12 @@ namespace DbMigrations.Migrations
 	{
 		public override void Up()
 		{
+			Execute.Script(@"Scripts\20191207222856_InitialMigration.sql");
 		}
 
 		public override void Down()
 		{
+			Execute.Script(@"Scripts\20191207222856_InitialMigration_Down.sql");
 		}
 	}
 }  

@@ -54,8 +54,8 @@ function Update-FluentDatabase($projectName)
 		"-configPath ""$($connectionProject.ConfigFilePath)""",
 		"-c ""$($migrationSettings.ConnectionName)""",
 		"-a ""$($migrationProject.OutputFileFullPath)""",
-		"-wd ""$($migrationProject.OutputFullPath)""")
-		#"-verbose ""FALSE""")
+		"-wd ""$($migrationProject.OutputFullPath)"""
+		"-verbose ""TRUE""")
 	$command = "$($migrationSettings.FluentMigrationToolPath) $params"
 	
 	Write-Host $command
@@ -83,7 +83,7 @@ function Rollback-FluentDatabase
 		"-c ""$($migrationSettings.ConnectionName)""",
 		"-a ""$($migrationProject.OutputFileFullPath)""",
 		"-wd ""$($migrationProject.OutputFullPath)""")
-		#"-verbose ""FALSE""")
+	
 	$command = "$($migrationSettings.FluentMigrationToolPath) $params"
 
 	Write-Host $command
@@ -132,13 +132,9 @@ function Add-FluentMigration
 	$migrationsPath = Join-Path $projectSettings.FullPath $migrationsFolderName
 	$className = $migrationName -replace "([\s-])", "_"
 	$fileName = $timestamp + "_$migrationName.cs"
-	$filePath = Join-Path $migrationsPath $fileName
-	$fileContent = GetMigrationContent $namespace $timestamp $className
-
-	CreateFolderIfNotExist $migrationsPath
-	New-Item -Path $migrationsPath -Name $fileName -ItemType "file" -Value $fileContent > $null
-	$p.ProjectItems.AddFromFile($filePath) > $null
-	Write-Output "New migration in file: $fileName"
+	$filePath = Join-Path $migrationsPath $fileName	
+	$codeScriptUpPath = "";
+	$codeScriptDownPath = "";
 
 	if ($AddScript) {
 		$scriptsFolderName = $migrationSettings.ScriptsFolder;
@@ -157,7 +153,17 @@ function Add-FluentMigration
 		New-Item -Path $scriptsFolderPath -Name $scriptDownFileName -ItemType "file" -Value "--SQL script here." > $null
 		$scriptItem = $p.ProjectItems.AddFromFile($scriptDownFilePath)
 		$scriptItem.Properties.Item("CopyToOutputDirectory").Value = 2;		#Copy if newer
+
+		$codeScriptUpPath = $scriptFilePath.Replace("$($projectSettings.FullPath)\", "")
+		$codeScriptDownPath = $scriptDownFilePath.Replace("$($projectSettings.FullPath)\", "")
 	}
+
+	$fileContent = GetMigrationContent $namespace $timestamp $className $codeScriptUpPath $codeScriptDownPath
+
+	CreateFolderIfNotExist $migrationsPath
+	New-Item -Path $migrationsPath -Name $fileName -ItemType "file" -Value $fileContent > $null
+	$p.ProjectItems.AddFromFile($filePath) > $null
+	Write-Output "New migration in file: $fileName"
 }
 
 function GetConfigFilePath($projProps)
@@ -179,8 +185,10 @@ function CreateFolderIfNotExist($path)
 	}
 }
 
-function GetMigrationContent($namespace, $timestamp, $className)
+function GetMigrationContent($namespace, $timestamp, $className, $scriptPathUp, $scriptPathDown)
 {
+	$executeScriptUp = If ([string]::IsNullOrEmpty($scriptPathUp)) {""} Else {"Execute.Script(@""$scriptPathUp"");"}
+	$executeScriptDown = If ([string]::IsNullOrEmpty($scriptPathDown)) {""} Else {"Execute.Script(@""$scriptPathDown"");"};
 	$fileContent = @"
 using FluentMigrator;
 
@@ -191,10 +199,12 @@ namespace $namespace
 	{
 		public override void Up()
 		{
+			$executeScriptUp
 		}
 
 		public override void Down()
 		{
+			$executeScriptDown
 		}
 	}
 }  
