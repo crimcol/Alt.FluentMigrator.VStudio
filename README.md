@@ -16,7 +16,8 @@ and following commands:
 * Rollback-FluentDatabase
 
 ### How to install?
-Please install [FluentMigrator](https://github.com/schambers/fluentmigrator) first.
+Please install [FluentMigrator](https://github.com/schambers/fluentmigrator).
+Required packages: [FluentMigrator](https://www.nuget.org/packages/FluentMigrator/) and [FluentMigrator.Console](https://www.nuget.org/packages/FluentMigrator.Console/).
 
 Select Default project in Package Manager console and then install [Alt.FluentMigrator.VStudio](https://www.nuget.org/packages/Alt.FluentMigrator.VStudio/) by command:
 
