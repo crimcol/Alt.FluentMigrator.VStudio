@@ -34,7 +34,7 @@ Example:
 {
   "ConnectionProjectName" : "ConsoleApp",
   "ConnectionName" : "TestDb",
-  "FluentMigrationToolPath" : ".\\packages\\FluentMigrator.Console.3.2.1\\net461\\x86\\Migrate.exe",
+  "FluentMigrationToolPath" : ".\\packages\\FluentMigrator.Console.3.2.7\\tools\\net461\\x86\\Migrate.exe",
   "DbProvider" : "SqlServer",
   "DbProviderHelpUrl" : "https://fluentmigrator.github.io/articles/runners/runner-console.html#--provider---dbtype---dbvalue-required",
   "MigrationFolder" : "Migrations",
