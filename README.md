@@ -61,7 +61,7 @@ Add-FluentMigration [-MigrationName] <string> [[-AddScript]] [[-ProjectName] <st
 
 #### Parameters
 * **-MigrationName <string>** -  required. Specifies migration name.
-* **-AddScript <SwitchParameter>** - optional. Specifies where sql file will be created in script folder.
+* **-AddScript <SwitchParameter>** - optional. Specifies whether sql file will be created in script folder.
 * **-ProjectName <string>** - optional. Specifies the project where migrations and scripts will be created. If omitted, the default project selected in package manager console is used.
 
 #### Example
