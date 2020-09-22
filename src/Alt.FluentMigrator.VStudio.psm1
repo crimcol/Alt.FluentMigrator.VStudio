@@ -40,9 +40,9 @@ function GetProjectProperties($projectName)
 	return $o
 }
 
-function Update-FluentDatabase($projectName)
+function Update-FluentDatabase([String]$ProjectName, [Int] $Timeout = 30)
 {
-	$migrationProject = GetProjectProperties $projectName
+	$migrationProject = GetProjectProperties $ProjectName
 	FluentBuild $migrationProject.Project
 
 	$migrationSettings = GetMigrationSettings $migrationProject.Name
@@ -54,7 +54,8 @@ function Update-FluentDatabase($projectName)
 		"-configPath ""$($connectionProject.ConfigFilePath)""",
 		"-c ""$($migrationSettings.ConnectionName)""",
 		"-a ""$($migrationProject.OutputFileFullPath)""",
-		"-wd ""$($migrationProject.OutputFullPath)"""
+		"-wd ""$($migrationProject.OutputFullPath)""",
+		"-timeout $($Timeout)",
 		"-verbose ""TRUE""")
 	$command = "$($migrationSettings.FluentMigrationToolPath) $params"
 	
@@ -67,9 +68,10 @@ function Rollback-FluentDatabase
 	[CmdletBinding(DefaultParameterSetName = 'MigrationNumber')]
 		param ([parameter(Position = 0, Mandatory = $true)]
 			[string] $MigrationNumber,
-			$projectName)
+			[String] $ProjectName, 
+			[Int] $Timeout = 30)
 
-	$migrationProject = GetProjectProperties $projectName
+	$migrationProject = GetProjectProperties $ProjectName
 	FluentBuild $migrationProject.Project
 
 	$migrationSettings = GetMigrationSettings $migrationProject.Name
@@ -82,7 +84,8 @@ function Rollback-FluentDatabase
 		"-configPath ""$($connectionProject.ConfigFilePath)""",
 		"-c ""$($migrationSettings.ConnectionName)""",
 		"-a ""$($migrationProject.OutputFileFullPath)""",
-		"-wd ""$($migrationProject.OutputFullPath)""")
+		"-wd ""$($migrationProject.OutputFullPath)""",
+		"-timeout $($Timeout)")
 	
 	$command = "$($migrationSettings.FluentMigrationToolPath) $params"
 
