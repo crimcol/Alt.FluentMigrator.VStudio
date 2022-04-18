@@ -9,6 +9,7 @@ function GetMigrationSettings($projectName)
 	$migrationSettings = Get-Content -Raw -Path $migrationSettingsFullPath | ConvertFrom-Json
 
 	$migrationSettings | Add-Member -MemberType NoteProperty -Name SettingsFullPath -Value $migrationSettingsFullPath
+	$migrationSettings.FluentMigrationToolPath = $migrationSettings.FluentMigrationToolPath.replace("%USERPROFILE%", $env:USERPROFILE)
 
 	return $migrationSettings
 }
@@ -151,11 +152,11 @@ function Add-FluentMigration
 		
 		New-Item -Path $scriptsFolderPath -Name $scriptFileName -ItemType "file" -Value "--SQL script here." > $null
 		$scriptItem = $p.ProjectItems.AddFromFile($scriptFilePath)
-		$scriptItem.Properties.Item("CopyToOutputDirectory").Value = 2;		#Copy if newer
+		$scriptItem.Properties.Item("CopyToOutputDirectory").Value = [uint32]2;		#Copy if newer
 
 		New-Item -Path $scriptsFolderPath -Name $scriptDownFileName -ItemType "file" -Value "--SQL script here." > $null
 		$scriptItem = $p.ProjectItems.AddFromFile($scriptDownFilePath)
-		$scriptItem.Properties.Item("CopyToOutputDirectory").Value = 2;		#Copy if newer
+		$scriptItem.Properties.Item("CopyToOutputDirectory").Value = [uint32]2;		#Copy if newer
 
 		$codeScriptUpPath = $scriptFilePath.Replace("$($projectSettings.FullPath)\", "")
 		$codeScriptDownPath = $scriptDownFilePath.Replace("$($projectSettings.FullPath)\", "")
@@ -164,7 +165,9 @@ function Add-FluentMigration
 	$fileContent = GetMigrationContent $namespace $timestamp $className $codeScriptUpPath $codeScriptDownPath
 
 	CreateFolderIfNotExist $migrationsPath
+	Write-Output "CreateFolderIfNotExist $migrationsPath"
 	New-Item -Path $migrationsPath -Name $fileName -ItemType "file" -Value $fileContent > $null
+	Write-Output "New-Item -Path $migrationsPath"
 	$p.ProjectItems.AddFromFile($filePath) > $null
 	Write-Output "New migration in file: $fileName"
 }
