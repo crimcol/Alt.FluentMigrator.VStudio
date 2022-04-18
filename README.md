@@ -16,7 +16,7 @@ and following commands:
 * Rollback-FluentDatabase
 
 ### How to install?
-Please install [FluentMigrator](https://github.com/schambers/fluentmigrator).
+Please install [FluentMigrator](https://github.com/schambers/fluentmigrator) first.
 Required packages: [FluentMigrator](https://www.nuget.org/packages/FluentMigrator/) and [FluentMigrator.Console](https://www.nuget.org/packages/FluentMigrator.Console/).
 
 Select Default project in Package Manager console and then install [Alt.FluentMigrator.VStudio](https://www.nuget.org/packages/Alt.FluentMigrator.VStudio/) by command:
@@ -24,7 +24,9 @@ Select Default project in Package Manager console and then install [Alt.FluentMi
 ```console
 PM > Install-Package Alt.FluentMigrator.VStudio
 ```
-It will create **migrations.json** file which contains settings. Please update it.
+Manually create required **migrations.json** file which contains settings. Please update it.
+
+![migrations.json in project](doc/migrations_json_in_project.jpg "migrations.json in project")
 
 ### How to configurate migrations.json?
 
@@ -32,19 +34,25 @@ Example:
 
 ```json
 {
-  "ConnectionProjectName" : "ConsoleApp",
-  "ConnectionName" : "TestDb",
-  "FluentMigrationToolPath" : ".\\packages\\FluentMigrator.Console.3.2.7\\tools\\net461\\x86\\Migrate.exe",
-  "DbProvider" : "SqlServer",
-  "DbProviderHelpUrl" : "https://fluentmigrator.github.io/articles/runners/runner-console.html#--provider---dbtype---dbvalue-required",
-  "MigrationFolder" : "Migrations",
-  "ScriptsFolder" :  "Scripts",
-  "TimeFormat" : "yyyyMMddHHmmss"
+  "ConnectionProjectName": "ConsoleApp",
+  "ConnectionName": "TestDb",
+  "FluentMigrationToolPath": ".\\packages\\FluentMigrator.Console.3.2.7\\tools\\net461\\x86\\Migrate.exe",
+  "DbProvider": "SqlServer",
+  "DbProviderHelpUrl": "https://fluentmigrator.github.io/articles/runners/runner-console.html#--provider---dbtype---dbvalue-required",
+  "MigrationFolder": "Migrations",
+  "ScriptsFolder":  "Scripts",
+  "TimeFormat": "yyyyMMddHHmmss"
 }
 ```
 * **ConnectionProjectName** - name of the project in your solution which contains Web.config or App.config file with connection string.
 * **ConnectionName** - specify connection name what you want to use.
-* **FluentMigrationToolPath** - relative path to FluentMigrator tool.
+* **FluentMigrationToolPath** - relative path to FluentMigrator tool.<br>
+Supports *%USERPROFILE%* variable for .NET Core projects. Example:
+```json
+{
+	"FluentMigrationToolPath": "%USERPROFILE%\\.nuget\\packages\\fluentmigrator.console\\3.3.2\\net461\\any\\Migrate.exe",
+}
+```
 * **DbProvider** - database provider. It is a parameter for FluentMigrator: [--provider, --dbtype, --db=VALUE](https://fluentmigrator.github.io/articles/runners/runner-console.html#--provider---dbtype---dbvalue-required)
 * **DbProviderHelpUrl** - url on documentation.
 * **MigrationFolder** - folder name in your project where all migrations will be created. it also supports subfolders. 'Migrations' by default.
@@ -99,6 +107,10 @@ This command will apply all recently created migrations.
 
 ```console
 PM > Update-FluentDatabase
+```
+You can specify **-Timeout** parameter if your migration take a lot of time. Default value **30** seconds.
+```console
+PM > Update-FluentDatabase -Timeout 120
 ```
 
 ### Rollback-FluentDatabase
