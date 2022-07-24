@@ -1,5 +1,5 @@
 {
-  "ConnectionProjectName": "ConsoleApp",
+  "ConnectionProjectName": "WebApplicationNet6",
   "ConnectionName": "TestDb",
   "FluentMigrationToolPath": "%USERPROFILE%\\.nuget\\packages\\fluentmigrator.console\\3.3.2\\net461\\any\\Migrate.exe",
   "DbProvider": "SqlServer",

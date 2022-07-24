@@ -13,9 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbMigrationsNetFramework48", "DbMigrationsNetFramework48\DbMigrationsNetFramework48.csproj", "{FB887B25-741F-43CE-A96E-F50D072E1754}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbMigrationsNet31", "DbMigrationsNet31\DbMigrationsNet31.csproj", "{0E5D4059-0B0A-4AE0-B2E7-EE5432C21844}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbMigrationsNet31", "DbMigrationsNet31\DbMigrationsNet31.csproj", "{0E5D4059-0B0A-4AE0-B2E7-EE5432C21844}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbMigrationsNet6", "DbMigrationsNet6\DbMigrationsNet6.csproj", "{280229EE-A160-404E-8F27-78D1D100DCB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbMigrationsNet6", "DbMigrationsNet6\DbMigrationsNet6.csproj", "{280229EE-A160-404E-8F27-78D1D100DCB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplicationNet6", "WebApplicationNet6\WebApplicationNet6.csproj", "{A67D7B67-6F43-403F-B096-CE046E0EAF2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{280229EE-A160-404E-8F27-78D1D100DCB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{280229EE-A160-404E-8F27-78D1D100DCB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{280229EE-A160-404E-8F27-78D1D100DCB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A67D7B67-6F43-403F-B096-CE046E0EAF2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A67D7B67-6F43-403F-B096-CE046E0EAF2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A67D7B67-6F43-403F-B096-CE046E0EAF2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A67D7B67-6F43-403F-B096-CE046E0EAF2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
