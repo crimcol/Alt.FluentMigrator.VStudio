@@ -15,19 +15,4 @@
     <PackageReference Include="FluentMigrator.Console" Version="3.3.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Scripts\2022041812260753_M1.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Scripts\2022041812260753_M1_Down.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Scripts\2022041812261210_M4.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Scripts\2022041812261210_M4_Down.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

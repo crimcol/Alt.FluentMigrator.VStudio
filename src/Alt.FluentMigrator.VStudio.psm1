@@ -14,8 +14,81 @@ function GetMigrationSettings($projectName)
 	return $migrationSettings
 }
 
-function GetProjectProperties($projectName)
+function ReadConnectionString
 {
+	[CmdletBinding()]
+		param($connectionStringPath, $connectionName)
+		
+	if ([string]::IsNullOrEmpty($connectionProject.ConfigFilePath))
+	{
+		Write-Error -Message "Config file path is empty." -ErrorAction Stop 
+	}
+	
+	$connectionString = ""
+	try {
+		$connectionString = ReadConnectionStringFromJsonConfig $connectionStringPath $connectionName
+	}
+	catch {
+		Write-Verbose "probably it is not a json file"
+		Write-Verbose $_
+	}
+
+	if ([string]::IsNullOrEmpty($connectionString))
+	{
+		$connectionString = ReadConnectionStringFromXmlConfig $connectionStringPath $connectionName
+	}
+	else
+	{
+		return $connectionString
+	}
+
+	if ([string]::IsNullOrEmpty($connectionString))
+	{
+		Write-Error -Message "ConnectionString '$($connectionName)' not found in file '$($connectionStringPath)'." -ErrorAction Stop 
+	}
+
+	return $connectionString
+}
+
+function ReadConnectionStringFromJsonConfig
+{
+	[CmdletBinding()]
+		param($connectionStringPath, $connectionName)
+		
+	Write-Verbose "Read connection string from JSON config: $connectionStringPath"
+	$json = Get-Content -Path $connectionStringPath | ConvertFrom-Json
+	$connectionStrings = $json.ConnectionStrings
+	
+	foreach($item in $connectionStrings.PSObject.Properties){
+		if($item.Name -match $connectionName){
+			return $item.Value
+		}else{
+			Write-Verbose "Skip connection string $($item.Name) : $($item.Value)"
+		}
+	}
+}
+
+function ReadConnectionStringFromXmlConfig
+{
+	[CmdletBinding()]
+		param($connectionStringPath, $connectionName)
+		
+	Write-Verbose "Read connection string from XML config: $connectionStringPath"
+	$cfg = [xml](Get-Content -Path $connectionStringPath)
+	$connectionStrings = $cfg.SelectNodes("//connectionStrings/add")
+	foreach($cs in $connectionStrings){
+		if($cs.name -match $connectionName){
+			return $cs.connectionString
+		}else{
+			Write-Verbose "Skip connection string $($cs.name) : $($cs.connectionString)"
+		}
+	}
+}
+
+function GetProjectProperties
+{
+	[CmdletBinding()]
+		param($projectName)
 	$p = GetProject $projectName
 
 	$fullPath = Split-Path -Path $p.FullName
@@ -24,6 +97,17 @@ function GetProjectProperties($projectName)
 	$outputFullPath = [IO.Path]::Combine($fullPath, $outputPath)
 	$outputFileFullPath = [IO.Path]::Combine($outputFullPath, $outputFileName)
 	$configFilePath = $outputFileFullPath + ".config"
+	
+	if (-not(Test-Path $configFilePath))
+	{
+		$prevConfigPath = $configFilePath
+		$configFilePath = [IO.Path]::Combine($outputFullPath, "appsettings.json")
+		if (-not(Test-Path $configFilePath))
+		{
+			Write-Verbose -Message "Config file was not found:`r`n$($prevConfigPath)`r`n$($configFilePath)"
+			$configFilePath = ""
+		}
+	}
 
 	$properties = @{
 		Name = $p.Name
@@ -41,19 +125,23 @@ function GetProjectProperties($projectName)
 	return $o
 }
 
-function Update-FluentDatabase([String]$ProjectName, [Int] $Timeout = 30)
+function Update-FluentDatabase
 {
+	[CmdletBinding()]
+		param ([String]$ProjectName, [Int] $Timeout = 30)
+
 	$migrationProject = GetProjectProperties $ProjectName
 	FluentBuild $migrationProject.Project
 
 	$migrationSettings = GetMigrationSettings $migrationProject.Name
 	$connectionProject = GetProjectProperties $migrationSettings.ConnectionProjectName
+	$connectionString = ReadConnectionString $connectionProject.ConfigFilePath $migrationSettings.ConnectionName
 
 	$params = @(
 		"-t:migrate", 
 		"-db $($migrationSettings.DbProvider)",
-		"-configPath ""$($connectionProject.ConfigFilePath)""",
-		"-c ""$($migrationSettings.ConnectionName)""",
+		#"-configPath ""$($connectionProject.ConfigFilePath)""",
+		"-c ""$($connectionString)""",
 		"-a ""$($migrationProject.OutputFileFullPath)""",
 		"-wd ""$($migrationProject.OutputFullPath)""",
 		"-timeout $($Timeout)",
@@ -77,13 +165,14 @@ function Rollback-FluentDatabase
 
 	$migrationSettings = GetMigrationSettings $migrationProject.Name
 	$connectionProject = GetProjectProperties $migrationSettings.ConnectionProjectName
+	$connectionString = ReadConnectionString $connectionProject.ConfigFilePath $migrationSettings.ConnectionName
 
 	$params = @(
 		"-t rollback:toversion", 
 		"-version $MigrationNumber",
 		"-db $($migrationSettings.DbProvider)",
-		"-configPath ""$($connectionProject.ConfigFilePath)""",
-		"-c ""$($migrationSettings.ConnectionName)""",
+		#"-configPath ""$($connectionProject.ConfigFilePath)""",
+		"-c ""$($connectionString)""",
 		"-a ""$($migrationProject.OutputFileFullPath)""",
 		"-wd ""$($migrationProject.OutputFullPath)""",
 		"-timeout $($Timeout)")
