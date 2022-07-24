@@ -10,7 +10,7 @@ Import-Module ..\..\src\Alt.FluentMigrator.VStudio.psm1 -Force
 Find-Package Alt.FluentMigrator.VStudio
 Uninstall-Package Alt.FluentMigrator.VStudio -verbose
 Install-Package Alt.FluentMigrator.VStudio -verbose
-Install-Package Alt.FluentMigrator.VStudio -Source LocalSource -Version 1.3.2 -verbose
+Install-Package Alt.FluentMigrator.VStudio -Source LocalSource -Version 1.3.3 -verbose
 ```
 
 
