@@ -124,6 +124,13 @@ PM > Update-FluentDatabase -Timeout 120
 
 This command will revert all migrations to specified version (migration number).
 
+
+#### Parameters
+* **-Script** -  optional. Specifies whether you only want to get the script and not run it.
+* **-Timeout** - optional. The waiting time that is established. Default value **30** seconds.
+
 ```console
 PM > Rollback-FluentDatabase 20191207220215
 ```
+
+

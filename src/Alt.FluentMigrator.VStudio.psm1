@@ -168,7 +168,9 @@ function Rollback-FluentDatabase
 		param ([parameter(Position = 0, Mandatory = $true)]
 			[string] $MigrationNumber,
 			[String] $ProjectName, 
-			[Int] $Timeout = 30)
+			[Int] $Timeout = 30,
+		    [Switch]$Script
+		)
 
 	$migrationProject = GetProjectProperties $ProjectName
 	FluentBuild $migrationProject.Project
@@ -186,8 +188,12 @@ function Rollback-FluentDatabase
 		"-a ""$($migrationProject.OutputFileFullPath)""",
 		"-wd ""$($migrationProject.OutputFullPath)""",
 		"-timeout $($Timeout)")
-	
-	$command = "$($migrationSettings.FluentMigrationToolPath) $params"
+
+	if ($Script) {
+        $params += "-p", "-o"
+    }
+
+	$command = "$($migrationSettings.FluentMigrationToolPath) $($params -join ' ')"
 
 	Write-Host $command
 	Invoke-Expression -Command $command
