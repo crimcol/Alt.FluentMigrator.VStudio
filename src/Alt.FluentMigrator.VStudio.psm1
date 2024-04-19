@@ -127,30 +127,40 @@ function GetProjectProperties
 
 function Update-FluentDatabase
 {
-	[CmdletBinding()]
-		param ([String]$ProjectName, [Int] $Timeout = 30)
+    [CmdletBinding()]
+    param (
+        [String]$ProjectName,
+        [Int]$Timeout = 30,
+        [Switch]$Script
+    )
 
-	$migrationProject = GetProjectProperties $ProjectName
-	FluentBuild $migrationProject.Project
+    $migrationProject = GetProjectProperties $ProjectName
+    FluentBuild $migrationProject.Project
 
-	$migrationSettings = GetMigrationSettings $migrationProject.Name
-	$connectionProject = GetProjectProperties $migrationSettings.ConnectionProjectName
-	$connectionString = ReadConnectionString $connectionProject.ConfigFilePath $migrationSettings.ConnectionName
+    $migrationSettings = GetMigrationSettings $migrationProject.Name
+    $connectionProject = GetProjectProperties $migrationSettings.ConnectionProjectName
+    $connectionString = ReadConnectionString $connectionProject.ConfigFilePath $migrationSettings.ConnectionName
 
-	$params = @(
-		"-t:migrate", 
-		"-db $($migrationSettings.DbProvider)",
-		#"-configPath ""$($connectionProject.ConfigFilePath)""",
-		"-c ""$($connectionString)""",
-		"-a ""$($migrationProject.OutputFileFullPath)""",
-		"-wd ""$($migrationProject.OutputFullPath)""",
-		"-timeout $($Timeout)",
-		"-verbose ""TRUE""")
-	$command = "$($migrationSettings.FluentMigrationToolPath) $params"
-	
-	Write-Host $command
-	Invoke-Expression -Command $command
+    $params = @(
+        "-t:migrate", 
+        "-db $($migrationSettings.DbProvider)",
+        "-c ""$($connectionString)""",
+        "-a ""$($migrationProject.OutputFileFullPath)""",
+        "-wd ""$($migrationProject.OutputFullPath)""",
+        "-timeout $($Timeout)",
+        "-verbose ""TRUE"""
+    )
+
+    if ($Script) {
+        $params += "-p", "-o"
+    }
+
+    $command = "$($migrationSettings.FluentMigrationToolPath) $($params -join ' ')"
+
+    Write-Host $command
+    Invoke-Expression -Command $command
 }
+
 
 function Rollback-FluentDatabase
 {
@@ -158,7 +168,9 @@ function Rollback-FluentDatabase
 		param ([parameter(Position = 0, Mandatory = $true)]
 			[string] $MigrationNumber,
 			[String] $ProjectName, 
-			[Int] $Timeout = 30)
+			[Int] $Timeout = 30,
+		    [Switch]$Script
+		)
 
 	$migrationProject = GetProjectProperties $ProjectName
 	FluentBuild $migrationProject.Project
@@ -176,8 +188,12 @@ function Rollback-FluentDatabase
 		"-a ""$($migrationProject.OutputFileFullPath)""",
 		"-wd ""$($migrationProject.OutputFullPath)""",
 		"-timeout $($Timeout)")
-	
-	$command = "$($migrationSettings.FluentMigrationToolPath) $params"
+
+	if ($Script) {
+        $params += "-p", "-o"
+    }
+
+	$command = "$($migrationSettings.FluentMigrationToolPath) $($params -join ' ')"
 
 	Write-Host $command
 	Invoke-Expression -Command $command

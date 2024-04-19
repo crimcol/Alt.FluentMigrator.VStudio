@@ -106,9 +106,16 @@ namespace DbMigrations.Migrations
 This command will apply all recently created migrations.
 
 ```console
-PM > Update-FluentDatabase
+PM > Update-FluentDatabase [[-Script]] [[-Timeout]<int>]
 ```
-You can specify **-Timeout** parameter if your migration take a lot of time. Default value **30** seconds.
+
+#### Parameters
+* **-Script** -  optional. Specifies whether you only want to get the script and not run it.
+* **-Timeout** - optional. The waiting time that is established. Default value **30** seconds.
+
+
+If your migration takes a long time and you need to extend it, you can specify -Timeout parameter to 120
+
 ```console
 PM > Update-FluentDatabase -Timeout 120
 ```
@@ -117,6 +124,13 @@ PM > Update-FluentDatabase -Timeout 120
 
 This command will revert all migrations to specified version (migration number).
 
+
+#### Parameters
+* **-Script** -  optional. Specifies whether you only want to get the script and not run it.
+* **-Timeout** - optional. The waiting time that is established. Default value **30** seconds.
+
 ```console
 PM > Rollback-FluentDatabase 20191207220215
 ```
+
+
