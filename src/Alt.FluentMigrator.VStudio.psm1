@@ -92,7 +92,7 @@ function GetProjectProperties
 	$p = GetProject $projectName
 
 	$fullPath = Split-Path -Path $p.FullName
-	$outputPath = $p.ConfigurationManager.ActiveConfiguration.Properties.Item("OutputPath").Value
+	$outputPath = $p.ConfigurationManager.ActiveConfiguration.Properties.Item("OutputPath").Value.TrimEnd("\")
 	$outputFileName = $p.Properties.Item("OutputFileName").Value
 	$outputFullPath = [IO.Path]::Combine($fullPath, $outputPath)
 	$outputFileFullPath = [IO.Path]::Combine($outputFullPath, $outputFileName)
